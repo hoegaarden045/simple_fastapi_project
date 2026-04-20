@@ -6,13 +6,16 @@ from app.database import Base
 from sqlalchemy.orm import Mapped, mapped_column
 
 class User(Base):
-    __tablename__ = "user"
+    __tablename__ = "user" # название таблицы в бд 
+
+    # mapped трансилирует тд в python в тд в sql (int в INTEGER, str в VARCHAR)
+    # mapped_colummn задает валидацию данных
     id: Mapped[int] = mapped_column(primary_key=True)
     login: Mapped[str] = mapped_column(unique=True)
 
 
 class Wallet(Base):
-    __tablename__ = "wallet" # название таблицы в бд 
+    __tablename__ = "wallet" 
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]

@@ -31,7 +31,7 @@ class CreateWalletRequest(BaseModel):
         v = v.strip()
 
         if not v:
-            raise ValueError("wallet name cannot be empty")
+            raise ValueError("Wallet name cannot be empty")
         
         return v 
     

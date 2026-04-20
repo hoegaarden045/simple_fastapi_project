@@ -22,8 +22,8 @@ def add_expense(db: Session, user_id: int, wallet_name: str, amount: Decimal) ->
     wallet.balance -= amount 
     return wallet
 
-def get_all_wallets(db: Session, user_id: int) -> list(Wallet):
-    return db.query(Wallet).filter(User.id == user_id, Wallet.user_id == user_id).all()
+def get_all_wallets(db: Session, user_id: int) -> list[Wallet]:
+    return db.query(Wallet).filter(Wallet.user_id == user_id).all()
 
 def create_wallet(db: Session, user_id: int, wallet_name: str, amount: Decimal) -> Wallet:
     wallet = Wallet(name=wallet_name, balance=amount, user_id=user_id)

@@ -13,7 +13,7 @@ def get_balance(db: Session, current_user: User, wallet_name: str | None = None)
     if not wallets_repository.is_wallet_exist(db, current_user.id, wallet_name):
         raise HTTPException(
             status_code=404,
-            detail=f"wallet '{wallet_name}' no found"
+            detail=f"wallet '{wallet_name}' not found"
         )
     
     wallet = wallets_repository.get_wallet_balance_by_name(db, current_user.id, wallet_name)

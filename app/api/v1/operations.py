@@ -15,9 +15,9 @@ def add_income(operation: OperationRequest, db: Session = Depends(get_db),
     # db автоматически получается через dependency injection из get_db
     return operations_service.add_income(db, current_user, operation)
 
-@router.post("/operations/expence")
-def add_expence(operation: OperationRequest, db: Session = Depends(get_db),
+@router.post("/operations/expense")
+def add_expense(operation: OperationRequest, db: Session = Depends(get_db),
                 current_user: User = Depends(get_current_user)):
     # Вызов сервиса для добавления расхода (уменьшение баланса кошелька)
     # db автоматически получается через dependency injection из get_db
-    return operations_service.add_expence(db, current_user, operation)
+    return operations_service.add_expense(db, current_user, operation)
