@@ -7,7 +7,7 @@ from app.enums import CurrencyEnum
 
 
 class User(Base):
-    __tablename__ = "user"  # название таблицы в бд
+    __tablename__ = "users"  # название таблицы в бд
 
     # mapped трансилирует тд в python в тд в sql (int в INTEGER, str в VARCHAR)
     # mapped_colummn задает валидацию данных
@@ -22,7 +22,7 @@ class Wallet(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
     balance: Mapped[Decimal]
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
 
     currency: Mapped[CurrencyEnum]
 

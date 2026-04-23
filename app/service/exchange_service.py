@@ -1,8 +1,7 @@
-from ast import Dict, Tuple
 from decimal import Decimal
+from typing import Dict, Tuple
 
 import requests
-
 from app.enums import CurrencyEnum
 
 FALLBACK_RATES: Dict[Tuple[str, str], Decimal] = {
