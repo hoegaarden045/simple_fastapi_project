@@ -3,10 +3,11 @@ from typing import Generator
 from fastapi.testclient import TestClient
 import pytest
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker, declarative_base
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.database import Base
 from app.dependency import get_db
+from app.enums import CurrencyEnum
 from app.models import User, Wallet
 from main import app
 
@@ -16,6 +17,7 @@ test_engine = create_engine(TEST_DATABASE_URL, connect_args={"check_same_thread"
 
 TestSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 
+
 def get_test_db() -> Generator[Session, None, None]:
     db = TestSessionLocal()
     try:
@@ -23,19 +25,23 @@ def get_test_db() -> Generator[Session, None, None]:
     finally:
         db.close()
 
+
 app.dependency_overrides[get_db] = get_test_db
 
-# объект для имитации запросов к app 
+
+# объект для имитации запросов к app
 @pytest.fixture()
 def client():
     yield TestClient(app)
+
 
 @pytest.fixture(autouse=True)
 def setup_db():
     # Пересоздание всех таблиц перед тестом
     Base.metadata.create_all(bind=test_engine)
-    yield           # передать управление в тест 
+    yield  # передать управление в тест
     Base.metadata.drop_all(bind=test_engine)
+
 
 @pytest.fixture()
 def db_session() -> Generator[Session, None, None]:
@@ -45,17 +51,19 @@ def db_session() -> Generator[Session, None, None]:
     finally:
         db.close()
 
-@pytest.fixture()  
+
+@pytest.fixture()
 def user(db_session: Session) -> User:
     user = User(login="test")
     db_session.add(user)
-    db_session.commit() 
-    return user 
+    db_session.commit()
+    return user
+
 
 @pytest.fixture()
 def wallet(db_session: Session, user: User) -> Wallet:
-    wallet = Wallet(name="card", balance=200, user_id=user.id)
+    wallet = Wallet(name="card", balance=200, user_id=user.id, currency=CurrencyEnum.RUB)
     db_session.add(wallet)
-    db_session.commit() 
+    db_session.commit()
     db_session.refresh(wallet)
-    return wallet 
+    return wallet
