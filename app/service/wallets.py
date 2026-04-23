@@ -8,18 +8,20 @@ from app.repository import wallets as wallets_repository
 from app.service import exchange_service
 from fastapi import HTTPException
 
+
 def get_total_balance(db: Session, current_user: User) -> TotalBalance:
     wallets = wallets_repository.get_all_wallets(db, current_user.id)
     total_balance = Decimal(0)
 
-    for wallet in wallets: 
+    for wallet in wallets:
         if wallet.currency == CurrencyEnum.RUB:
             total_balance += wallet.balance
-        else: 
+        else:
             exchange_rate = exchange_service.get_exchange_rate(wallet.currency, CurrencyEnum.RUB)
             total_balance += exchange_rate * wallet.balance
 
     return TotalBalance(total_balance=total_balance)
+
 
 def create_wallet(db: Session, current_user: User, wallet: CreateWalletRequest) -> WalletResponse:
     if wallets_repository.is_wallet_exist(db, current_user.id, wallet.name):
@@ -30,6 +32,7 @@ def create_wallet(db: Session, current_user: User, wallet: CreateWalletRequest) 
     db.commit()
 
     return WalletResponse.model_validate(wallet)
+
 
 def get_all_wallets(db: Session, current_user: User) -> list[WalletResponse]:
     wallets = wallets_repository.get_all_wallets(db, current_user.id)

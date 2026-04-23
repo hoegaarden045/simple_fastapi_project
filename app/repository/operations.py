@@ -4,6 +4,7 @@ from datetime import datetime
 from app.enums import CurrencyEnum
 from app.models import Operation, Wallet
 
+
 def create_operation(
     db: Session,
     wallet_id: int,
@@ -25,6 +26,7 @@ def create_operation(
     db.flush()
     return operation
 
+
 def get_operations_list(
     db: Session, wallets_ids: list[int], date_from: datetime | None, date_to: datetime | None
 ) -> list[Operation]:
@@ -37,5 +39,3 @@ def get_operations_list(
         query = query.filter(Operation.created_at <= date_to)
 
     return query.all()
-
-

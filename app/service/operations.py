@@ -82,7 +82,11 @@ def transfer_between_wallets(
     db: Session, user_id: int, from_wallet_id: int, to_wallet_id: int, amount: Decimal
 ) -> OperationResponse:
     from_wallet = wallets_repository.get_wallet_by_id(db, user_id, from_wallet_id)
-    to_wallet = wallets_repository.get_wallet_by_id(db, user_id, to_wallet_id,)
+    to_wallet = wallets_repository.get_wallet_by_id(
+        db,
+        user_id,
+        to_wallet_id,
+    )
 
     if not from_wallet or not to_wallet:
         raise HTTPException(status_code=404, detail="Wallet not found")

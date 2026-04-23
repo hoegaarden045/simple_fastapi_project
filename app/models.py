@@ -5,6 +5,7 @@ from app.database import Base
 from sqlalchemy.orm import Mapped, mapped_column
 from app.enums import CurrencyEnum
 
+
 class User(Base):
     __tablename__ = "user"  # название таблицы в бд
 
@@ -12,6 +13,8 @@ class User(Base):
     # mapped_colummn задает валидацию данных
     id: Mapped[int] = mapped_column(primary_key=True)
     login: Mapped[str] = mapped_column(unique=True)
+    hashed_password: Mapped[str] = mapped_column(nullable=False)
+
 
 class Wallet(Base):
     __tablename__ = "wallet"
@@ -22,6 +25,7 @@ class Wallet(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
 
     currency: Mapped[CurrencyEnum]
+
 
 class Operation(Base):
     __tablename__ = "operation"
